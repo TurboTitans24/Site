@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover, shrink-to-fit=no">
+  <title>Rutie's Group • About Us</title>
+  <!-- Fonts & Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Dancing+Script:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="../rsc/rutiesgrouplogo.png" type="image/png">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+    }
+
+    /* DEFAULT MOTION THEME */
+    :root {
+      --color1: #21561f;
+      --color2: #e1d7cb;
+      --color3: #e7a102;
+      --color4: #3b56b6;
+      --light-bg: #ffffff;
+      --text-visible: #1e2a1a;
+      --glass-bg: rgba(255, 255, 255, 0.2);
+      --card-front-bg: linear-gradient(135deg, rgba(254,247,232,0.95), rgba(255,242,226,0.95));
+      --card-front-border: 2px solid rgba(231,167,2,0.5);
+      --menu-bg: linear-gradient(145deg, #fef8f0, #f9f0e2);
+      --menu-border: 1px solid rgba(100,40,92,0.25);
+      --about-bg: rgba(100,40,92,0.08);
+      --footer-bg: rgba(255,252,245,0.9);
+      --footer-border: 1px solid rgba(0,0,0,0.05);
+      --modal-bg: linear-gradient(145deg, #fffaf2, #fcf3e8);
+      --shadow-color: rgba(0,0,0,0.08);
+      --gradient-start: #3b56b6;
+      --gradient-middle: #fcfcfc;
+      --gradient-end: #cc1f1f;
+      --ribbon-bg: linear-gradient(90deg, #3b56b6, #2d7530, #3b56b6);
+      --ribbon-text: #f9eec1;
+      --bio-card-bg: rgba(255,255,245,0.75);
+      --bio-border: 1px solid rgba(231,167,2,0.4);
+      --bio-shadow: 0 20px 35px -12px rgba(0,0,0,0.2);
+    }
+
+    /* SECOND GREEN THEME */
+    body.green-theme {
+      --color1: #6fbf6a;
+      --color2: #d9e8d0;
+      --color3: #f5b81b;
+      --color4: #3b6e3a;
+      --light-bg: #0a1f0d;
+      --text-visible: #e2f0da;
+      --card-front-bg: linear-gradient(135deg, rgba(20,45,22,0.92), rgba(18,38,20,0.92));
+      --card-front-border: 2px solid rgba(245,184,27,0.6);
+      --menu-bg: linear-gradient(145deg, #1a3a1d, #143118);
+      --menu-border: 1px solid rgba(111,191,106,0.5);
+      --about-bg: rgba(111,191,106,0.12);
+      --footer-bg: rgba(10,20,12,0.9);
+      --footer-border: 1px solid rgba(255,255,255,0.08);
+      --modal-bg: linear-gradient(145deg, #1b3a1e, #122e15);
+      --shadow-color: rgba(0,0,0,0.4);
+      --gradient-start: #0f2b11;
+      --gradient-middle: #c52c2c;
+      --gradient-end: #0c240f;
+      --ribbon-bg: linear-gradient(90deg, #1b4d1b, #2a6b2a, #1b4d1b);
+      --ribbon-text: #f5e56c;
+      --bio-card-bg: rgba(10,30,12,0.85);
+      --bio-border: 1px solid rgba(245,184,27,0.5);
+    }
+
+    body {
+      font-family: 'Outfit', 'Segoe UI', system-ui, sans-serif;
+      background: var(--light-bg);
+      color: var(--text-visible);
+      line-height: 1.5;
+      overflow-x: hidden;
+      cursor: none;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      transition: background 0.4s ease, color 0.3s ease;
+      position: relative;
+    }
+
+    /* MOTION GRADIENT BACKGROUND */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+      background: linear-gradient(125deg, 
+        var(--gradient-start) 0%, 
+        var(--gradient-middle) 45%, 
+        var(--gradient-end) 100%);
+      background-size: 200% 200%;
+      animation: gradientFlow 40s ease infinite; 
+    }
+    
+    @keyframes gradientFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    
+    body::after {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      background: radial-gradient(circle at 20% 40%, rgba(255,255,255,0.03) 0%, rgba(0,0,0,0.02) 100%);
+      pointer-events: none;
+    }
+    
+    body.green-theme::after {
+      background: radial-gradient(circle at 70% 30%, rgba(210,245,190,0.05) 0%, rgba(0,0,0,0.2) 100%);
+    }
+
+    /* ========= LOADING SCREEN ========= */
+    #customLoadingScreen {
+      position: fixed;
+      inset: 0;
+      background: #1e1a14 radial-gradient(circle at 30% 40%, #3c2e1f 2%, transparent 25%);
+      z-index: 10000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.8s, visibility 0.8s;
+      color: #e1d7cb;
+    }
+    .loader-hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .loading-logo {
+      width: 120px;
+      margin-bottom: 1.5rem;
+      filter: drop-shadow(0 0 15px #e7a102);
+      animation: gentleGlow 1.2s infinite alternate;
+    }
+    @keyframes gentleGlow {
+      0% { filter: drop-shadow(0 0 5px #e7a102); opacity: 0.9; }
+      100% { filter: drop-shadow(0 0 20px #f5b81b); opacity: 1; }
+    }
+    .progress-bar-container {
+      width: 260px;
+      height: 8px;
+      background: rgba(225,215,203,0.25);
+      border-radius: 20px;
+      margin: 25px 0;
+      overflow: hidden;
+      backdrop-filter: blur(4px);
+    }
+    .progress-fill {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, #e7a102, #fad454, #e7a102);
+      border-radius: 20px;
+      animation: loadProgress 2.2s ease forwards;
+      box-shadow: 0 0 8px rgba(231,161,2,0.6);
+    }
+    @keyframes loadProgress {
+      0% { width: 0%; }
+      100% { width: 100%; }
+    }
+    .loading-message {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.3rem;
+      letter-spacing: 2px;
+      margin-top: 1rem;
+      background: linear-gradient(45deg, #e7a102, #fceb98);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .loading-icon-spin {
+      font-size: 2.5rem;
+      animation: spinLoader 1.4s infinite linear;
+      color: #e7a102;
+      margin-bottom: 0.5rem;
+    }
+    @keyframes spinLoader {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* BALLOON CURSOR */
+    .balloon-cursor {
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      width: 45px;
+      height: 55px;
+      background: radial-gradient(circle at 30% 35%, #fad974, #e7a102);
+      border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.2);
+      transform: translate(-50%, -50%) rotate(5deg);
+      transition: transform 0.08s linear, opacity 0.2s;
+      opacity: 0.95;
+    }
+    .balloon-cursor::after {
+      content: '';
+      position: absolute;
+      bottom: -14px;
+      left: 50%;
+      width: 3px;
+      height: 22px;
+      background: #a07c4b;
+      transform: translateX(-50%);
+    }
+    .balloon-cursor.burst {
+      animation: burstAnim 0.3s ease-out forwards;
+    }
+    @keyframes burstAnim {
+      0% { transform: translate(-50%, -50%) scale(1); opacity: 0.9; }
+      100% { transform: translate(-50%, -50%) scale(2.2); opacity: 0; }
+    }
+
+    ::-webkit-scrollbar { width: 7px; }
+    ::-webkit-scrollbar-track { background: rgba(225,215,203,0.3); border-radius: 10px; }
+    ::-webkit-scrollbar-thumb { background: var(--color4); border-radius: 10px; }
+
+    .landing-wrapper {
+      position: relative;
+      flex: 1;
+      backdrop-filter: blur(1px);
+    }
+    .content-layer {
+      position: relative;
+      z-index: 5;
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+    }
+
+    /* FANCY MENU */
+    .fancy-menu {
+      display: flex;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-bottom: 2rem;
+      position: relative;
+      z-index: 20;
+      align-items: center;
+    }
+    .menu-item {
+      background: var(--menu-bg);
+      border: var(--menu-border);
+      padding: 0.65rem 1.4rem;
+      border-radius: 3rem 1rem 3rem 1rem;
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--color4);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 5px 12px var(--shadow-color);
+    }
+    .menu-item i {
+      font-size: 1.1rem;
+      color: var(--color3);
+    }
+    .menu-item:hover {
+      background: var(--color4);
+      color: white;
+      transform: translateY(-3px);
+      box-shadow: 0 15px 25px -8px rgba(0,0,0,0.3);
+      border-color: var(--color3);
+    }
+    .menu-item:hover i {
+      color: var(--color3);
+    }
+    .theme-toggle-btn {
+      background: var(--menu-bg);
+      border: var(--menu-border);
+      padding: 0.65rem 1rem;
+      border-radius: 3rem 1rem 3rem 1rem;
+      font-weight: 700;
+      color: var(--color4);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1rem;
+      backdrop-filter: blur(8px);
+    }
+    .theme-toggle-btn:hover {
+      background: var(--color4);
+      color: white;
+      transform: translateY(-3px);
+    }
+
+    /* PAGE TITLE */
+    .about-header {
+      text-align: center;
+      margin: 0 0 2rem;
+    }
+    .about-header h1 {
+      font-family: 'Dancing Script', cursive;
+      font-size: 2.8rem;
+      color: var(--color3);
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.1);
+      letter-spacing: 1px;
+    }
+    .about-header p {
+      font-size: 1rem;
+      background: rgba(0,0,0,0.05);
+      backdrop-filter: blur(4px);
+      display: inline-block;
+      padding: 0.3rem 1.5rem;
+      border-radius: 2rem;
+    }
+
+    /* ADVANCED FANCY CARD FOR FOUNDER */
+    .founder-showcase {
+      margin: 2rem 0 3rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .founder-advanced-card {
+      background: var(--bio-card-bg);
+      backdrop-filter: blur(12px);
+      border-radius: 3rem 1.5rem 3rem 1.5rem;
+      border: var(--bio-border);
+      box-shadow: var(--bio-shadow);
+      max-width: 1100px;
+      width: 100%;
+      overflow: hidden;
+      transition: transform 0.4s ease, box-shadow 0.4s;
+    }
+    .founder-advanced-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 30px 45px -12px rgba(0,0,0,0.35);
+    }
+    .card-inner-luxury {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 1.8rem;
+      padding: 2rem 2rem;
+    }
+    .founder-image-area {
+      flex: 1.2;
+      min-width: 260px;
+      text-align: center;
+      position: relative;
+    }
+    .founder-image-area img {
+      width: 100%;
+      max-width: 320px;
+      height: auto;
+      aspect-ratio: 3 / 4;
+      border-radius: 2rem 0.8rem 2rem 0.8rem;
+      box-shadow: 0 25px 35px -10px rgba(0,0,0,0.3);
+      border: 3px solid var(--color3);
+      transition: transform 0.3s;
+      background: #fef3e0;
+      object-fit: cover;
+    }
+    .founder-image-area img:hover {
+      transform: scale(1.02);
+    }
+    .founder-bio-text {
+      flex: 2;
+      padding: 0.5rem;
+    }
+    .bio-title {
+      font-family: 'Dancing Script', cursive;
+      font-size: 2rem;
+      color: var(--color3);
+      margin-bottom: 0.25rem;
+      letter-spacing: 1px;
+    }
+    .founder-name {
+      font-size: 1.9rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--color4), var(--color3));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+    .founder-description {
+      font-size: 1.02rem;
+      line-height: 1.65;
+      color: var(--text-visible);
+      text-shadow: 0 1px 1px rgba(0,0,0,0.02);
+      background: rgba(0,0,0,0.02);
+      padding: 1rem;
+      border-radius: 1.5rem;
+      backdrop-filter: blur(2px);
+    }
+
+    /* OUR STORY SECTION */
+    .story-section {
+      background: var(--about-bg);
+      border-radius: 2.5rem 1rem 2.5rem 1rem;
+      padding: 2rem;
+      margin: 2rem 0;
+      border-left: 6px solid var(--color3);
+      backdrop-filter: blur(4px);
+      transition: all 0.3s;
+    }
+    .story-section h2 {
+      font-family: 'Dancing Script', cursive;
+      font-size: 2rem;
+      color: var(--color4);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .story-section p {
+      font-size: 1rem;
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+
+    /* VISION & MISSION CARDS */
+    .twin-vision {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      margin: 3rem 0 2rem;
+    }
+    .vision-card, .mission-card {
+      flex: 1;
+      position: relative;
+      background: var(--bio-card-bg);
+      backdrop-filter: blur(12px);
+      border-radius: 2rem 0.8rem 2rem 0.8rem;
+      padding: 1.8rem;
+      border: var(--bio-border);
+      transition: all 0.25s ease;
+      text-align: center;
+      overflow: hidden;
+      z-index: 1;
+    }
+    .vision-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('../rsc/logo.png');
+      background-repeat: repeat;
+      background-size: 70px 70px;
+      background-position: center;
+      opacity: 0.12;
+      pointer-events: none;
+      z-index: 0;
+      transition: opacity 0.3s;
+    }
+    .mission-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('../rsc/rutiesgrouplogo.png');
+      background-repeat: repeat;
+      background-size: 65px 65px;
+      background-position: center;
+      opacity: 0.12;
+      pointer-events: none;
+      z-index: 0;
+      transition: opacity 0.3s;
+    }
+    body.green-theme .vision-card::before {
+      opacity: 0.18;
+    }
+    body.green-theme .mission-card::before {
+      opacity: 0.18;
+    }
+    .vision-card:hover::before, .mission-card:hover::before {
+      opacity: 0.22;
+    }
+    .vision-card > *, .mission-card > * {
+      position: relative;
+      z-index: 2;
+    }
+    .vision-card:hover, .mission-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 25px -12px var(--shadow-color);
+      border-color: var(--color3);
+    }
+    .vision-card i, .mission-card i {
+      font-size: 2.5rem;
+      color: var(--color3);
+      margin-bottom: 1rem;
+    }
+    .vision-card h3, .mission-card h3 {
+      font-size: 1.7rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: var(--color4);
+    }
+    .vision-card p, .mission-card p {
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .simple-footer {
+      text-align: center;
+      padding: 1.8rem;
+      font-size: 0.8rem;
+      border-top: var(--footer-border);
+      background: var(--footer-bg);
+      backdrop-filter: blur(8px);
+      color: var(--text-visible);
+      transition: all 0.3s ease;
+    }
+
+    /* RESPONSIVENESS */
+    @media (max-width: 780px) {
+      .content-layer {
+        padding: 1rem 1.2rem 2rem;
+      }
+      .fancy-menu {
+        justify-content: center;
+        gap: 0.6rem;
+      }
+      .menu-item, .theme-toggle-btn {
+        padding: 0.45rem 1rem;
+        font-size: 0.75rem;
+      }
+      .founder-advanced-card .card-inner-luxury {
+        flex-direction: column;
+        text-align: center;
+        padding: 1.5rem;
+      }
+      .founder-name {
+        font-size: 1.5rem;
+      }
+      .bio-title {
+        font-size: 1.6rem;
+      }
+      .founder-description {
+        font-size: 0.9rem;
+      }
+      .story-section {
+        padding: 1.2rem;
+      }
+      .twin-vision {
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+      .about-header h1 {
+        font-size: 2.2rem;
+      }
+      .founder-image-area img {
+        max-width: 280px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .menu-item span, .theme-toggle-btn span {
+        font-size: 0.7rem;
+      }
+      .founder-name {
+        font-size: 1.3rem;
+      }
+      .bio-title {
+        font-size: 1.3rem;
+      }
+      .vision-card::before, .mission-card::before {
+        background-size: 50px 50px;
+      }
+      .vision-card h3, .mission-card h3 {
+        font-size: 1.4rem;
+      }
+      .loading-message {
+        font-size: 1rem;
+      }
+      .progress-bar-container {
+        width: 220px;
+      }
+    }
+  </style>
+</head>
+<body id="bodyRoot">
+
+  <!-- ========= LOADING SCREEN ========= -->
+  <div id="customLoadingScreen">
+    <img src="../rsc/rutiesgrouplogo.png" alt="Ruties Group Logo" class="loading-logo" onerror="this.style.display='none'">
+    <div class="loading-icon-spin"><i class="fas fa-circle-notch"></i></div>
+    <div class="progress-bar-container"><div class="progress-fill"></div></div>
+    <div class="loading-message">✨ Loading</div>
+    <div class="loading-message" style="font-size:0.8rem; margin-top:0.5rem;">Rutie's Group • About Us</div>
+  </div>
+
+  <!-- BALLOON CURSOR -->
+  <div class="balloon-cursor" id="balloonCursor"></div>
+
+  <div class="landing-wrapper">
+    <div class="content-layer">
+      
+      <!-- FANCY MENU with clean URLs -->
+      <div class="fancy-menu" data-aos="fade-down">
+        <div class="menu-item" id="navHome"><i class="fas fa-home"></i> Home</div>
+        <div class="menu-item" id="navRetail"><i class="fas fa-store"></i> Retail</div>
+        <div class="menu-item" id="navCorporate"><i class="fas fa-building"></i> Corporate</div>
+        <div class="menu-item" id="navGallery"><i class="fas fa-images"></i> Gallery</div>
+        <div class="menu-item" id="navContact"><i class="fas fa-envelope"></i> Contact</div>
+        <div class="theme-toggle-btn" id="themeToggleBtn"><i class="fas fa-leaf" id="themeIcon"></i> <span id="themeText"></span></div>
+      </div>
+
+      <!-- ABOUT HEADER -->
+      <div class="about-header" data-aos="zoom-in">
+        <h1><i class="fas fa-users"></i> About Us</h1>
+        <p>Passion, Excellence & Celebration</p>
+      </div>
+
+      <!-- FOUNDER CARD -->
+      <div class="founder-showcase" data-aos="fade-up">
+        <div class="founder-advanced-card">
+          <div class="card-inner-luxury">
+            <div class="founder-image-area">
+              <img src="../rsc/ruties.png" alt="Rutendo Sithole-Gwatidzo" onerror="this.src='https://placehold.co/400x533/21561f/white?text=Rutie%27s+Founder'">
+              <div class="signature-icon"></div>
+            </div>
+            <div class="founder-bio-text">
+              <div class="bio-title">Bio — Founding Director</div>
+              <div class="founder-name">Rutendo Sithole-Gwatidzo</div>
+              <div class="founder-description">
+                The Founder of Rutie's Group is a passionate entrepreneur with a deep love for both corporate and retail events. Since establishing the business in 2014, she has successfully grown Rutie's Group into a trusted brand known for creativity, professionalism, and exceptional service. With years of experience in event coordination, party supplies, corporate gifting, and décor solutions, she is dedicated to bringing memorable experiences to life for every client. Her commitment to excellence, attention to detail, and passion for people continue to drive the company's success and reputation in the industry.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- OUR STORY SECTION -->
+      <div class="story-section" data-aos="fade-up" data-aos-delay="100">
+        <h2><i class="fas fa-star-of-life"></i> Our Journey</h2>
+        <p>Rutie's Group started because we wanted to make fun parties AND help businesses look good. We began as a tiny party shop and grew into two big parts. Rutie's Party Shop for regular folks and our Corporate Division for businesses. We have a real store at Fourways Mall where you can get everything for parties: balloons, decorations, themed stuff, you name it. And for businesses, we do custom printing, fancy company gifts, team uniforms, branded cups and mugs, and executive gifts all over South Africa.</p>
+        <p>We celebrate with you during birthdays, weddings, business events, anything. Customers first, creativity always. We make your moment shine, no matter what.</p>
+      </div>
+
+      <!-- VISION & MISSION CARDS -->
+      <div class="twin-vision" data-aos="fade-up" data-aos-delay="150">
+        <div class="vision-card">
+          <i class="fas fa-eye"></i>
+          <h3>Our Vision</h3>
+          <p>To help Africa celebrate better. Great parties for families, great merch for businesses. Simple.</p>
+        </div>
+        <div class="mission-card">
+          <i class="fas fa-bullseye"></i>
+          <h3>Our Mission</h3>
+          <p>To make your parties and business stuff awesome. We give you great party supplies, amazing decorations, and custom printed products all done with honesty, heart, and getting every little thing right.</p>
+        </div>
+      </div>
+
+    </div>
+    <div class="simple-footer">
+      <i class="fas fa-copyright"></i> 2026 Rutie's Group. All Rights Reserved.
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="../js/about.js" defer></script>
+</body>
+</html>

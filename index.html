@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover, shrink-to-fit=no">
+  <title>Rutie's Group • Connect & Celebrate</title>
+  <!-- Fonts & Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Dancing+Script:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="rsc/rutiesgrouplogo.png" type="image/png">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+    }
+
+    /* DEFAULT MOTION THEME */
+    :root {
+      --color1: #21561f;
+      --color2: #e1d7cb;
+      --color3: #e7a102;
+      --color4: #3b56b6;
+      --light-bg: #ffffff;
+      --text-visible: #1e2a1a;
+      --glass-bg: rgba(255, 255, 255, 0.2);
+      --card-front-bg: linear-gradient(135deg, rgba(254,247,232,0.95), rgba(255,242,226,0.95));
+      --card-front-border: 2px solid rgba(231,167,2,0.5);
+      --menu-bg: linear-gradient(145deg, #fef8f0, #f9f0e2);
+      --menu-border: 1px solid rgba(100,40,92,0.25);
+      --about-bg: rgba(100,40,92,0.08);
+      --footer-bg: rgba(255,252,245,0.9);
+      --footer-border: 1px solid rgba(0,0,0,0.05);
+      --modal-bg: linear-gradient(145deg, #fffaf2, #fcf3e8);
+      --contact-icon-bg: rgba(231,167,2,0.12);
+      --shadow-color: rgba(0,0,0,0.08);
+      --gradient-start: #3b56b6;
+      --gradient-middle: #fcfcfc;
+      --gradient-end: #fff5ec;
+      --ribbon-bg: linear-gradient(90deg, #3b56b6, #2d7530, #3b56b6);
+      --ribbon-text: #f9eec1;
+    }
+
+    /* SECOND GREEN THEME */
+    body.green-theme {
+      --color1: #6fbf6a;
+      --color2: #d9e8d0;
+      --color3: #f5b81b;
+      --color4: #3b6e3a;
+      --light-bg: #0a1f0d;
+      --text-visible: #e2f0da;
+      --card-front-bg: linear-gradient(135deg, rgba(20,45,22,0.92), rgba(18,38,20,0.92));
+      --card-front-border: 2px solid rgba(245,184,27,0.6);
+      --menu-bg: linear-gradient(145deg, #1a3a1d, #143118);
+      --menu-border: 1px solid rgba(111,191,106,0.5);
+      --about-bg: rgba(111,191,106,0.12);
+      --footer-bg: rgba(10,20,12,0.9);
+      --footer-border: 1px solid rgba(255,255,255,0.08);
+      --modal-bg: linear-gradient(145deg, #1b3a1e, #122e15);
+      --contact-icon-bg: rgba(245,184,27,0.18);
+      --shadow-color: rgba(0,0,0,0.4);
+      --gradient-start: #0f2b11;
+      --gradient-middle: #9d3030;
+      --gradient-end: #0c240f;
+      --ribbon-bg: linear-gradient(90deg, #1b4d1b, #2a6b2a, #1b4d1b);
+      --ribbon-text: #f5e56c;
+    }
+
+    body {
+      font-family: 'Outfit', 'Segoe UI', system-ui, sans-serif;
+      background: var(--light-bg);
+      color: var(--text-visible);
+      line-height: 1.5;
+      overflow-x: hidden;
+      cursor: none;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      transition: background 0.4s ease, color 0.3s ease;
+      position: relative;
+    }
+
+    /* MOTION GRADIENT BACKGROUND */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+      background: linear-gradient(125deg, 
+        var(--gradient-start) 0%, 
+        var(--gradient-middle) 45%, 
+        var(--gradient-end) 100%);
+      background-size: 200% 200%;
+      animation: gradientFlow 12s ease infinite;
+    }
+    
+    @keyframes gradientFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    
+    body::after {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      background: radial-gradient(circle at 20% 40%, rgba(255,255,255,0.03) 0%, rgba(0,0,0,0.02) 100%);
+      pointer-events: none;
+    }
+    
+    body.green-theme::after {
+      background: radial-gradient(circle at 70% 30%, rgba(210,245,190,0.05) 0%, rgba(0,0,0,0.2) 100%);
+    }
+
+    /* PROMOTIONAL RIBBON - scrolls text right to left */
+    .promo-ribbon {
+      width: 100%;
+      background: var(--ribbon-bg);
+      color: var(--ribbon-text);
+      overflow: hidden;
+      white-space: nowrap;
+      padding: 0.55rem 0;
+      font-weight: 600;
+      font-size: 0.9rem;
+      letter-spacing: 0.5px;
+      position: relative;
+      z-index: 200;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      display: flex;
+      align-items: center;
+      backdrop-filter: blur(4px);
+    }
+    .ribbon-track {
+      display: inline-block;
+      animation: scrollRibbon 18s linear infinite;
+      padding-left: 100%;
+    }
+    @keyframes scrollRibbon {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
+    }
+    .ribbon-track span {
+      margin-right: 3rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .ribbon-track i {
+      color: var(--color3);
+    }
+
+    /* BALLOON CURSOR */
+    .balloon-cursor {
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      width: 45px;
+      height: 55px;
+      background: radial-gradient(circle at 30% 35%, #fad974, #e7a102);
+      border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.2);
+      transform: translate(-50%, -50%) rotate(5deg);
+      transition: transform 0.08s linear, opacity 0.2s;
+      opacity: 0.95;
+    }
+    .balloon-cursor::after {
+      content: '';
+      position: absolute;
+      bottom: -14px;
+      left: 50%;
+      width: 3px;
+      height: 22px;
+      background: #a07c4b;
+      transform: translateX(-50%);
+    }
+    .balloon-cursor.burst {
+      animation: burstAnim 0.3s ease-out forwards;
+    }
+    @keyframes burstAnim {
+      0% { transform: translate(-50%, -50%) scale(1); opacity: 0.9; }
+      100% { transform: translate(-50%, -50%) scale(2.2); opacity: 0; }
+    }
+
+    ::-webkit-scrollbar { width: 7px; }
+    ::-webkit-scrollbar-track { background: rgba(225,215,203,0.3); border-radius: 10px; }
+    ::-webkit-scrollbar-thumb { background: var(--color4); border-radius: 10px; }
+
+    /* LOADING SCREEN */
+    #loadingScreen {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(145deg, #1e2a1a 0%, #2e1e2a 100%);
+      z-index: 10000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.8s, visibility 0.8s;
+      color: #e1d7cb;
+    }
+    .loader-hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .loading-logo {
+      width: 130px;
+      margin-bottom: 1.5rem;
+      filter: drop-shadow(0 0 20px var(--color3));
+      animation: pulseLogo 1s infinite alternate;
+    }
+    @keyframes pulseLogo {
+      0% { transform: scale(0.96); opacity: 0.8; }
+      100% { transform: scale(1.05); opacity: 1; }
+    }
+    .progress-ring {
+      width: 220px;
+      height: 6px;
+      background: rgba(225,215,203,0.25);
+      border-radius: 20px;
+      margin: 20px 0;
+      overflow: hidden;
+    }
+    .progress-fill {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--color3), #fad454);
+      border-radius: 20px;
+      animation: fillProgress 3s ease-out forwards;
+    }
+    @keyframes fillProgress {
+      0% { width: 0%; }
+      100% { width: 100%; }
+    }
+
+    .landing-wrapper {
+      position: relative;
+      flex: 1;
+      backdrop-filter: blur(1px);
+    }
+    .content-layer {
+      position: relative;
+      z-index: 5;
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+    }
+
+    /* FANCY MENU */
+    .fancy-menu {
+      display: flex;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-bottom: 3rem;
+      position: relative;
+      z-index: 20;
+      align-items: center;
+    }
+    .menu-item {
+      background: var(--menu-bg);
+      border: var(--menu-border);
+      padding: 0.65rem 1.4rem;
+      border-radius: 3rem 1rem 3rem 1rem;
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--color4);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 5px 12px var(--shadow-color);
+    }
+    .menu-item i {
+      font-size: 1.1rem;
+      color: var(--color3);
+    }
+    .menu-item:hover {
+      background: var(--color4);
+      color: white;
+      transform: translateY(-3px);
+      box-shadow: 0 15px 25px -8px rgba(0,0,0,0.3);
+      border-color: var(--color3);
+    }
+    .menu-item:hover i {
+      color: var(--color3);
+    }
+    .theme-toggle-btn {
+      background: var(--menu-bg);
+      border: var(--menu-border);
+      padding: 0.65rem 1rem;
+      border-radius: 3rem 1rem 3rem 1rem;
+      font-weight: 700;
+      color: var(--color4);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1rem;
+      backdrop-filter: blur(8px);
+    }
+    .theme-toggle-btn:hover {
+      background: var(--color4);
+      color: white;
+      transform: translateY(-3px);
+    }
+
+    .group-title {
+      text-align: center;
+      margin: 1rem 0 2.5rem;
+    }
+    /* NEW LOGO STYLE REPLACES H1 */
+    .group-logo-large {
+      display: block;
+      max-width: 320px;
+      width: 70%;
+      margin: 0 auto 1rem;
+      filter: drop-shadow(0 8px 18px rgba(0,0,0,0.18));
+      transition: transform 0.4s ease;
+    }
+    .group-logo-large:hover {
+      transform: scale(1.02);
+    }
+    .group-title p {
+      font-size: 1rem;
+      font-weight: 500;
+      background: rgba(0,0,0,0.05);
+      backdrop-filter: blur(4px);
+      display: inline-block;
+      padding: 0.3rem 1.2rem;
+      border-radius: 2rem;
+      color: var(--text-visible);
+    }
+    body.green-theme .group-title p {
+      background: rgba(200,230,180,0.1);
+    }
+
+    /* FLIP CARDS */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2.5rem;
+      margin: 2.5rem 0 3rem;
+    }
+    .flip-card {
+      background-color: transparent;
+      width: 100%;
+      height: 380px;
+      perspective: 1500px;
+      cursor: pointer;
+    }
+    .flip-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+      transform-style: preserve-3d;
+      border-radius: 2rem 0.8rem 2rem 0.8rem;
+      box-shadow: 0 25px 35px -12px var(--shadow-color);
+    }
+    @media (hover: hover) {
+      .flip-card:hover .flip-inner {
+        transform: rotateY(180deg);
+      }
+    }
+    .flip-front, .flip-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 2rem 0.8rem 2rem 0.8rem;
+      padding: 2rem 1.2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .flip-front {
+      background: var(--card-front-bg);
+      border: var(--card-front-border);
+      gap: 1.2rem;
+      backdrop-filter: blur(4px);
+    }
+    .flip-front img {
+      width: 110px;
+      height: auto;
+      filter: drop-shadow(0 6px 12px rgba(0,0,0,0.15));
+      object-fit: contain;
+    }
+    .flip-front h2 {
+      font-size: 2rem;
+      font-weight: 800;
+      background: linear-gradient(45deg, var(--color4), var(--color3));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .flip-back {
+      background: linear-gradient(145deg, #21561fcc, #2e742acc);
+      backdrop-filter: blur(3px);
+      color: white;
+      transform: rotateY(180deg);
+      text-align: center;
+      gap: 1rem;
+      justify-content: center;
+    }
+    body.green-theme .flip-back {
+      background: linear-gradient(145deg, #0d3b0ecc, #1a5c1dcc);
+    }
+    .flip-back p {
+      font-size: 1rem;
+      line-height: 1.5;
+      font-weight: 500;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    }
+    /* BUTTONS WITH ZOOM & POP EFFECT */
+    .flip-btn {
+      background: var(--color3);
+      border: none;
+      padding: 0.7rem 1.6rem;
+      border-radius: 2rem 0.6rem 2rem 0.6rem;
+      font-weight: 700;
+      color: #1f3a1c;
+      margin-top: 1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.2);
+      cursor: pointer;
+      font-size: 0.9rem;
+      transform: scale(1);
+    }
+    .flip-btn:hover {
+      background: #f5bc2c;
+      transform: scale(1.08);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    }
+    .flip-btn:active {
+      transform: scale(0.92);
+      transition: transform 0.1s;
+    }
+
+    /* CONTACT ICONS */
+    .contact-fancy {
+      margin: 3rem 0 2rem;
+      text-align: center;
+    }
+    .contact-fancy h3 {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.8rem;
+      color: var(--color4);
+      margin-bottom: 2rem;
+      position: relative;
+      display: inline-block;
+      background: rgba(0,0,0,0.03);
+      padding: 0 1rem;
+      border-radius: 3rem;
+    }
+    .contact-fancy h3:after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 20%;
+      width: 60%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--color3), var(--color4));
+      border-radius: 4px;
+    }
+    .icon-rainbow {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+    .contact-icon-item {
+      background: var(--contact-icon-bg);
+      border-radius: 3rem 1rem 3rem 1rem;
+      padding: 1rem 1.8rem;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(100,40,92,0.2);
+      cursor: pointer;
+      box-shadow: 0 4px 12px var(--shadow-color);
+    }
+    body.green-theme .contact-icon-item {
+      border-color: rgba(111,191,106,0.5);
+    }
+    .contact-icon-item:hover {
+      background: var(--color3);
+      transform: translateY(-6px) scale(1.02);
+      box-shadow: 0 20px 30px -12px rgba(0,0,0,0.3);
+      border-color: var(--color4);
+    }
+    .contact-icon-item img {
+      width: 38px;
+      height: 38px;
+      object-fit: contain;
+    }
+    .contact-icon-item span {
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--color4);
+    }
+    .contact-icon-item:hover span {
+      color: #1e3a1c;
+    }
+    body.green-theme .contact-icon-item:hover span {
+      color: #0a1f0d;
+    }
+
+    .about-section {
+      margin: 4rem 0 2rem;
+      background: var(--about-bg);
+      padding: 2rem;
+      border-radius: 2rem;
+      border-left: 6px solid var(--color3);
+      transition: background 0.3s ease;
+      backdrop-filter: blur(4px);
+    }
+    .about-section h2 {
+      font-family: 'Dancing Script', cursive;
+      font-size: 2rem;
+      color: var(--color4);
+      margin-bottom: 1rem;
+    }
+    .about-section p {
+      font-size: 1rem;
+      line-height: 1.6;
+      color: var(--text-visible);
+    }
+
+    .simple-footer {
+      text-align: center;
+      padding: 1.8rem;
+      font-size: 0.8rem;
+      border-top: var(--footer-border);
+      background: var(--footer-bg);
+      backdrop-filter: blur(8px);
+      color: var(--text-visible);
+      transition: all 0.3s ease;
+    }
+
+    @media (max-width: 680px) {
+      .content-layer {
+        padding: 1rem 1rem 2rem;
+      }
+      .fancy-menu {
+        justify-content: center;
+        gap: 0.5rem;
+      }
+      .menu-item, .theme-toggle-btn {
+        padding: 0.45rem 1rem;
+        font-size: 0.75rem;
+      }
+      .flip-card {
+        height: 350px;
+      }
+      .contact-icon-item {
+        padding: 0.6rem 1.2rem;
+      }
+      .contact-icon-item img {
+        width: 28px;
+        height: 28px;
+      }
+      .contact-icon-item span {
+        font-size: 0.85rem;
+      }
+      .about-section {
+        padding: 1.2rem;
+      }
+      .flip-front img {
+        width: 85px;
+      }
+      .flip-front h2 {
+        font-size: 1.6rem;
+      }
+      .promo-ribbon {
+        font-size: 0.7rem;
+        padding: 0.4rem 0;
+      }
+      .group-logo-large {
+        max-width: 240px;
+      }
+    }
+  </style>
+</head>
+<body id="bodyRoot">
+
+  <!-- PROMOTIONAL RIBBON (scrolls right to left) -->
+  <div class="promo-ribbon">
+    <div class="ribbon-track">
+      <span><i class="fas fa-gift"></i>  All party supplies for you available • </span>
+      <span><i class="fas fa-truck"></i> Visit us at Fourways Mall • </span>
+      <span><i class="fas fa-star"></i> New sublimation designs just arrived • </span>
+      <span><i class="fas fa-calendar-alt"></i> Helping Africans celebrate in South Africa • </span>
+      <span><i class="fas fa-phone-alt"></i> Call us for custom quotes • </span>
+    </div>
+  </div>
+
+  <!-- LOADING SCREEN -->
+  <div id="loadingScreen">
+    <img src="rsc/rutiesgrouplogo.png" alt="Ruties Logo" class="loading-logo" onerror="this.src='https://placehold.co/130x130/21561f/white?text=Ruties'">
+    <div class="progress-ring"><div class="progress-fill"></div></div>
+    <p><i class=""></i> Rutie's Group • loading...</p>
+  </div>
+
+  <div class="balloon-cursor" id="balloonCursor"></div>
+
+  <div class="landing-wrapper">
+    <div class="content-layer">
+      
+      <!-- UPDATED MENU -->
+      <div class="fancy-menu" data-aos="fade-down">
+        <div class="menu-item" data-page="corporate-gifts"><i class="fas fa-briefcase"></i> Corporate Gifts</div>
+        <div class="menu-item" data-page="party-supplies"><i class="fas fa-store"></i> Party Supplies</div>
+        <div class="menu-item" data-page="gallery"><i class="fas fa-images"></i> Gallery</div>
+        <div class="menu-item" data-page="contact"><i class="fas fa-envelope"></i> Contact</div>
+        <div class="menu-item" data-page="about-page"><i class="fas fa-info-circle"></i> About</div>
+        <div class="theme-toggle-btn" id="themeToggleBtn"><i class="fas fa-leaf" id="themeIcon"></i> <span id="themeText"></span></div>
+      </div>
+
+      <div class="group-title" data-aos="zoom-in">
+        <img src="rsc/rutiesgrouplogo.png" alt="Rutie's Group" class="group-logo-large" onerror="this.src='https://placehold.co/320x100/21561f/white?text=Rutie%27s+Group'">
+        <p>where celebrations and corporate excellence unite </p>
+      </div>
+
+      <div class="cards-grid" data-aos="fade-up">
+        <div class="flip-card" id="corporateCard">
+          <div class="flip-inner">
+            <div class="flip-front">
+              <img src="rsc/rutiesgrouplogo.png" alt="Corporate Logo" onerror="this.src='https://placehold.co/110x110/64285c/white?text=Corporate'">
+              <h2><i class="fas fa-building"></i> Corporate</h2>
+              <div class="flip-btn"><i class="fas fa-redo-alt"></i>Explore</div>
+            </div>
+            <div class="flip-back">
+              <i class="fas fa-champagne-glasses" style="font-size: 2.5rem; color: var(--color3);"></i>
+              <p> We do nice sublimation printing, company gifts, team uniforms, and stuff for executives. Plus, we can hook you up with custom mugs, T-shirts, hoodies, drinkware, and even branded gear for events or trade shows.</p>
+              <button class="flip-btn" id="gotoCorporateBtn"><i class="fas fa-arrow-right"></i> Enter Corporate World</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="flip-card" id="retailCard">
+          <div class="flip-inner">
+            <div class="flip-front">
+              <img src="rsc/logo.png" alt="Retail Logo" onerror="this.src='https://placehold.co/110x110/e7a102/white?text=Party+Shop'">
+              <h2><i class="fas fa-store"></i> Retail</h2>
+              <div class="flip-btn"><i class="fas fa-redo-alt"></i> Discover</div>
+            </div>
+            <div class="flip-back">
+              <i class="fas fa-birthday-cake" style="font-size: 2.5rem; color: var(--color3);"></i>
+              <p>Come on over to Rutie's Party Shop we've got balloons, decorations, and everything for themed parties, whether it's a wedding, birthday, or baby shower.</p>
+              <button class="flip-btn" id="gotoRetailBtn"><i class="fas fa-arrow-right"></i> Explore Retail</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-fancy" data-aos="fade-up" data-aos-delay="100">
+        <h3><i class="fas fa-heart" style="color:#e7a102;"></i> Reach us directly <i class="fas fa-heart" style="color:#64285c;"></i></h3>
+        <div class="icon-rainbow">
+          <div class="contact-icon-item" data-contact-type="call">
+            <img src="rsc/Callusicon.png" alt="call" onerror="this.src='https://placehold.co/40x40/21561f/white?text=📞'">
+            <span>Call Now</span>
+          </div>
+          <div class="contact-icon-item" data-contact-type="email">
+            <img src="rsc/Emailusicon.png" alt="email" onerror="this.src='https://placehold.co/40x40/64285c/white?text=✉️'">
+            <span>Email Us</span>
+          </div>
+          <div class="contact-icon-item" data-contact-type="instagram">
+            <img src="rsc/Instagramicon.png" alt="instagram" onerror="this.src='https://placehold.co/40x40/e7a102/white?text=📸'">
+            <span>Instagram</span>
+          </div>
+          <div class="contact-icon-item" data-contact-type="whatsapp">
+            <img src="rsc/WhatsAppicon.png" alt="whatsapp" onerror="this.src='https://placehold.co/40x40/25D366/white?text=💬'">
+            <span>WhatsApp</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="about-section" data-aos="fade-up">
+        <h2><i class="fas fa-star-of-life"></i> About Rutie's Group</h2>
+        <p>Rutie's Group is a mix of two big parts. First, there's Rutie's Party Shop – your go-to physical store for party stuff like decorations, themed events, and everything you need to celebrate. Then, we've got our Corporate & Sublimation Division that hooks you up with high-quality branded merch, custom clothes, and corporate gifts all across South Africa.</p>
+        <p style="margin-top: 12px;"> Walk-ins welcome • Custom orders • Nationwide delivery available on corporate items.</p>
+      </div>
+    </div>
+    <div class="simple-footer">
+      <i class="fas fa-copyright"></i> 2026 Rutie's Group. All Rights Reserved.
+    </div>
+  </div>
+
+  <div id="contactModal" style="position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); z-index: 20000; display: flex; align-items: center; justify-content: center; visibility: hidden; opacity: 0; transition: all 0.2s ease;">
+    <div style="background: var(--modal-bg); max-width: 320px; width: 85%; border-radius: 2rem 0.8rem 2rem 0.8rem; padding: 1.8rem; text-align: center; box-shadow: 0 25px 40px rgba(0,0,0,0.4); border-top: 5px solid #e7a102;">
+      <i class="fas fa-envelope-open-text" style="font-size: 2rem; color: var(--color3);"></i>
+      <h3 id="modalContactTitle" style="font-family:'Dancing Script', cursive; margin: 0.8rem 0; color: var(--color4);">Contact</h3>
+      <p id="modalContactDetail" style="font-weight: 600; font-size: 1.1rem; margin: 1rem 0; background: rgba(0,0,0,0.08); padding: 0.7rem; border-radius: 1rem;"></p>
+      <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+        <button id="modalActionBtn" class="flip-btn" style="background: var(--color4); color: white;">Action</button>
+        <button id="modalCloseBtn" class="flip-btn" style="background: #aaa; color: #222;">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="js/index.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover, shrink-to-fit=no">
+  <title>Rutie's Group • Corporate</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Dancing+Script:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="../rsc/rutiesgrouplogo.png" type="image/png">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+    }
+    :root {
+      --color1: #21561f;
+      --color2: #e1d7cb;
+      --color3: #e7a102;
+      --color4: #2a3ea1;
+      --light-bg: #ffffff;
+      --text-visible: #2d2d2d;
+      --header-glass: rgba(33,86,31,0.94);
+    }
+    body {
+      font-family: 'Outfit', 'Segoe UI', sans-serif;
+      background: var(--light-bg);
+      color: var(--text-visible);
+      line-height: 1.5;
+      overflow-x: hidden;
+      cursor: none;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      max-width: 100vw;
+    }
+    /* LOADING SCREEN */
+    #loadingScreen {
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #1e3a1a 0%, #2c1e2a 100%);
+      z-index: 10000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.8s, visibility 0.8s;
+      color: var(--color2);
+    }
+    .loader-hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .loading-logo {
+      width: 130px;
+      margin-bottom: 1.8rem;
+      filter: drop-shadow(0 0 20px var(--color3));
+      animation: pulseLogo 1.2s infinite alternate;
+    }
+    @keyframes pulseLogo {
+      0% { transform: scale(0.96); opacity: 0.8; }
+      100% { transform: scale(1.06); opacity: 1; }
+    }
+    .progress-ring {
+      width: 220px;
+      height: 5px;
+      background: rgba(225,215,203,0.25);
+      border-radius: 20px;
+      margin: 25px 0 20px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--color3), #fad454);
+      border-radius: 20px;
+      animation: fillProgress 4s ease-out forwards;
+    }
+    @keyframes fillProgress {
+      0% { width: 0%; }
+      100% { width: 100%; }
+    }
+    /* balloon cursor */
+    .balloon-cursor {
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      width: 45px;
+      height: 55px;
+      background: radial-gradient(circle at 30% 35%, #fad974, #e7a102);
+      border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.2);
+      transform: translate(-50%, -50%) rotate(5deg);
+      transition: transform 0.08s linear;
+      opacity: 0.95;
+    }
+    .balloon-cursor::after {
+      content: '';
+      position: absolute;
+      bottom: -14px;
+      left: 50%;
+      width: 3px;
+      height: 22px;
+      background: #a07c4b;
+      transform: translateX(-50%);
+    }
+    .balloon-cursor.burst { animation: burstAnim 0.3s ease-out forwards; }
+    @keyframes burstAnim {
+      0% { transform: translate(-50%, -50%) scale(1); opacity: 0.9; }
+      100% { transform: translate(-50%, -50%) scale(2.2); opacity: 0; }
+    }
+    /* GLOBAL CUSTOM SCROLLBAR */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--color2);
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--color4);
+      border-radius: 10px;
+      transition: background 0.2s ease;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--color3);
+    }
+    /* Custom scrollbar for the gallery specifically - matching theme */
+    .slider-gallery {
+      scrollbar-width: thin;
+      scrollbar-color: var(--color4) var(--color2);
+    }
+    .slider-gallery::-webkit-scrollbar {
+      height: 8px;
+    }
+    .slider-gallery::-webkit-scrollbar-track {
+      background: var(--color2);
+      border-radius: 20px;
+      margin: 0 10px;
+    }
+    .slider-gallery::-webkit-scrollbar-thumb {
+      background: var(--color4);
+      border-radius: 20px;
+      transition: all 0.2s ease;
+    }
+    .slider-gallery::-webkit-scrollbar-thumb:hover {
+      background: var(--color3);
+    }
+    body.theme-mode ::-webkit-scrollbar-track {
+      background: #3a2e28;
+    }
+    body.theme-mode ::-webkit-scrollbar-thumb {
+      background: var(--color3);
+    }
+    body.theme-mode .slider-gallery::-webkit-scrollbar-track {
+      background: #3a2e28;
+    }
+    body.theme-mode .slider-gallery::-webkit-scrollbar-thumb {
+      background: var(--color3);
+    }
+    /* header */
+    .advanced-header {
+      position: sticky; top: 0; z-index: 1000; background: var(--header-glass);
+      backdrop-filter: blur(18px); border-bottom: 2px solid var(--color3);
+      padding: 0.7rem 1rem; display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; transition: transform 0.4s ease;
+      width: 100%;
+    }
+    .header-hidden { transform: translateY(-100%); }
+    .logo-area { display: flex; align-items: center; gap: 0.5rem; }
+    .shop-name {
+      font-size: clamp(1rem, 4vw, 1.6rem); font-weight: 700;
+      background: linear-gradient(45deg, #e7a102, #64285c, #e1d7cb, #21561f);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .nav-buttons { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    .unusual-btn, .fancy-quote {
+      background: rgba(100,40,92,0.3); border: 2px solid var(--color2); color: #fff3db;
+      padding: 0.45rem 1rem; border-radius: 3rem 0.8rem 3rem 0.8rem; font-weight: 700;
+      display: inline-flex; align-items: center; gap: 6px; cursor: pointer; white-space: nowrap;
+      font-size: clamp(0.7rem, 2.2vw, 0.85rem); text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .unusual-btn:hover, .fancy-quote:hover { background: var(--color3); color: #1e3a1c; border-color: var(--color4); transform: scale(0.97); }
+    .theme-symbol { font-size: 1.2rem; }
+    .dropdown-party { position: relative; }
+    .dropdown-menu {
+      position: absolute; top: 115%; right: 0; background: #fcf7ef; border: 2px solid var(--color4);
+      border-radius: 1.5rem 0.5rem; padding: 0.7rem; min-width: 190px; display: none;
+      flex-direction: column; gap: 6px; z-index: 1100; box-shadow: 0 15px 25px rgba(0,0,0,0.15);
+    }
+    .dropdown-party:hover .dropdown-menu, .dropdown-party.active .dropdown-menu { display: flex; }
+    .dropdown-menu a, .dropdown-menu .contact-info {
+      text-decoration: none; color: #2e241f; font-weight: 500; padding: 0.4rem 0.6rem;
+      border-radius: 1rem; background: #f3ede5; display: flex; align-items: center; gap: 8px;
+      font-size: 0.8rem;
+    }
+    main { 
+      padding: 1rem; 
+      max-width: 1400px; 
+      margin: 0 auto; 
+      width: 100%; 
+      flex: 1;
+      overflow-x: hidden;
+    }
+    /* Hero Slider */
+    .hero-slider {
+      position: relative;
+      width: 100%;
+      height: 65vh;
+      min-height: 380px;
+      max-height: 620px;
+      border-radius: 2rem;
+      overflow: hidden;
+      margin: 1.5rem 0 2rem;
+      box-shadow: 0 20px 35px rgba(0,0,0,0.2);
+    }
+    .slide-bg {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+      z-index: 1;
+    }
+    .slide-bg.active { opacity: 1; z-index: 2; }
+    .hero-overlay {
+      position: relative;
+      z-index: 10;
+      background: radial-gradient(circle, rgba(0,0,0,0.45), rgba(0,0,0,0.7));
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 1rem;
+    }
+    .hero-content { color: white; max-width: 800px; text-shadow: 0 4px 12px black; }
+    .hero-content h1 { font-size: clamp(2rem, 6vw, 4rem); font-family: 'Dancing Script', cursive; margin-bottom: 1rem; }
+    .hero-content p { font-size: clamp(1rem, 3vw, 1.4rem); margin-bottom: 1.8rem; }
+    /* service cards - SINGLE IMAGE VERSION: image above title, left aligned */
+    .service-card {
+      background: rgba(225,215,203,0.2);
+      border-radius: 2rem;
+      margin: 2rem 0;
+      padding: 1.5rem;
+      backdrop-filter: blur(2px);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.05);
+      transition: all 0.3s;
+      border-left: 6px solid var(--color3);
+      width: 100%;
+    }
+    /* Single image style: placed above title, left aligned, contained width */
+    .single-card-img {
+      max-width: 220px;
+      width: 100%;
+      height: auto;
+      border-radius: 1.5rem;
+      margin-bottom: 1rem;
+      display: block;
+      object-fit: contain;
+      background: rgba(225,215,203,0.3);
+      box-shadow: 0 6px 14px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+    }
+    .single-card-img:hover {
+      transform: scale(1.02);
+    }
+    .service-title-img {
+      display: none !important;
+    }
+    .flex-png-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 1.2rem;
+      justify-content: space-between;
+    }
+    .exp-text {
+      flex: 2;
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+    .exp-text img {
+      display: none;
+    }
+    .end-img {
+      display: none;
+    }
+    .quote-btn-wrap {
+      text-align: right;
+      margin-top: 1.2rem;
+    }
+    /* custom 3d zone */
+    .custom-3d-zone {
+      background: linear-gradient(135deg, #f9eedb, #fff2e0);
+      border-radius: 2.5rem;
+      padding: 2rem;
+      margin: 2rem 0;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 20px 30px -10px rgba(0,0,0,0.2);
+      width: 100%;
+    }
+    body.theme-mode .custom-3d-zone { background: #2e3b2c; color: #f0e2cf; }
+    .floating-icon { font-size: 3rem; display: inline-block; animation: float3d 4s infinite alternate; margin: 0 0.3rem; }
+    @keyframes float3d { 0% { transform: translateY(0px) rotate(0deg); } 100% { transform: translateY(-10px) rotate(3deg); } }
+    /* sliding gallery */
+    .slider-gallery { 
+      margin: 2.5rem 0; 
+      overflow-x: auto; 
+      position: relative; 
+      width: 100%; 
+      -webkit-overflow-scrolling: touch; 
+      scroll-behavior: smooth;
+      cursor: grab;
+      border-radius: 1rem;
+    }
+    .slider-gallery:active { cursor: grabbing; }
+    .slider-track { display: flex; gap: 1rem; width: max-content; padding: 0.8rem 0.3rem; }
+    .slider-track img { 
+      width: 260px; 
+      height: 260px; 
+      object-fit: cover; 
+      border-radius: 2rem; 
+      box-shadow: 0 12px 22px rgba(0,0,0,0.2); 
+      transition: transform 0.3s, box-shadow 0.2s; 
+      flex-shrink: 0; 
+      cursor: pointer;
+    }
+    .slider-track img:hover { transform: scale(1.02); box-shadow: 0 18px 30px rgba(0,0,0,0.25); }
+    @media (max-width: 768px) {
+      .slider-track img { width: 170px; height: 170px; }
+      .flex-png-row { flex-direction: column; }
+      .exp-text { text-align: center; }
+      .quote-btn-wrap { text-align: center; }
+      .hero-slider { height: 50vh; min-height: 320px; }
+      .service-card { padding: 1.2rem; }
+      .custom-3d-zone { padding: 1.2rem; }
+      .floating-icon { font-size: 2rem; }
+      .single-card-img { max-width: 160px; margin-left: auto; margin-right: auto; }
+    }
+    /* thank you message */
+    .thankyou-message {
+      text-align: center;
+      font-size: 1.6rem;
+      font-weight: 600;
+      padding: 1.8rem;
+      background: linear-gradient(130deg, #21561f10, #64285c10);
+      border-radius: 3rem;
+      margin: 1.2rem 0;
+      font-family: 'Dancing Script', cursive;
+      min-height: 98px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    /* footer wrapper */
+    .footer-wrapper {
+      position: relative;
+      flex-shrink: 0;
+      overflow: hidden;
+      margin-top: 2rem;
+      width: 100%;
+    }
+    .footer-video-background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+    }
+    .footer-overlay {
+      position: relative;
+      z-index: 1;
+      background: rgba(30, 26, 20, 0.75);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+    .footer-logo-section img { max-width: 130px; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.5)); }
+    .advanced-footer { text-align: center; color: #f5efe8; }
+    #typingWelcome {
+      font-size: 1.4rem;
+      font-weight: 600;
+      display: inline-block;
+      min-width: 200px;
+      letter-spacing: 1px;
+    }
+    .rights { font-size: 0.8rem; opacity: 0.8; margin-top: 0.8rem; }
+    @media (max-width: 680px) {
+      .nav-buttons { width: 100%; justify-content: space-between; margin-top: 0.3rem; }
+      .advanced-header { gap: 0.5rem; }
+      .thankyou-message { font-size: 1.2rem; padding: 1.2rem; min-height: 80px; }
+      #typingWelcome { font-size: 1.1rem; min-width: 160px; }
+      .floating-icon { font-size: 2rem; }
+    }
+    [data-aos] { transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+    img[onerror] { background: #f0e7da20; border-radius: 1rem; }
+    /* prevent white space on zoom */
+    html, body { overflow-x: clip; }
+    .container, main, .footer-wrapper { overflow-x: clip; }
+  </style>
+</head>
+<body id="bodyRoot">
+  <!-- LOADING SCREEN -->
+  <div id="loadingScreen">
+    <img src="../rsc/rutiesgrouplogo.png" alt="Ruties Logo" class="loading-logo" onerror="this.src='https://placehold.co/130x130/21561f/white?text=Ruties'">
+    <div class="progress-ring"><div class="progress-fill"></div></div>
+    <p style="font-size:1rem;"><i class="fas fa-sparkles"></i> Rutie's Corporate Services...</p>
+  </div>
+
+  <div class="balloon-cursor" id="balloonCursor"></div>
+
+  <header class="advanced-header" id="mainHeader">
+    <div class="logo-area">
+      <i class="fas fa-party-horn" style="font-size:1.8rem; color:#e7a102;"></i>
+      <span class="shop-name" id="typingShopName">Rutie's Corporate Services</span>
+    </div>
+    <div class="nav-buttons">
+      <button class="unusual-btn" id="homeNavBtn"><i class="fas fa-home"></i> Home</button>
+      <div class="dropdown-party" id="sublimationDropdown">
+        <button class="unusual-btn" id="galleryNavBtn"><i class="fas fa-images"></i> Gallery</button>
+      </div>
+      <div class="dropdown-party" id="contactDropdown">
+        <button class="unusual-btn" id="contactMainBtn"><i class="fas fa-address-book"></i> Contact</button>
+        <div class="dropdown-menu">
+          <div class="contact-info"><i class="fas fa-phone"></i> +27 (11) 395-3340</div>
+          <div class="contact-info"><i class="fas fa-envelope"></i> info@rutiespartyshop.co.za</div>
+          <div class="contact-info"><i class="fas fa-map-marker-alt"></i> Fourways Mall, Sandton</div>
+          <a href="https://www.instagram.com/rutiesgroup?igsh=aHdxNHpucnZpMzJw&utm_source=qr" target="_blank"><i class="fab fa-instagram"></i> Instagram</a>
+        </div>
+      </div>
+      <button class="unusual-btn" id="aboutNavBtn"><i class="fas fa-info-circle"></i> About</button>
+      <button id="themeToggleBtn" class="unusual-btn"><span class="theme-symbol">🌙</span></button>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero Slider with 4 images -->
+    <div class="hero-slider" id="heroSlider" data-aos="fade-up">
+      <div class="slide-bg" style="background-image: url('https://cdn.pixabay.com/photo/2025/01/03/00/02/ai-generated-9306969_1280.jpg');"></div>
+      <div class="slide-bg" style="background-image: url('https://cdn.pixabay.com/photo/2023/01/29/01/48/ai-generated-7752113_1280.jpg');"></div>
+      <div class="slide-bg" style="background-image: url('https://cdn.pixabay.com/photo/2023/01/29/01/47/ai-generated-7752095_1280.jpg');"></div>
+      <div class="slide-bg" style="background-image: url('https://cdn.pixabay.com/photo/2023/01/29/01/49/ai-generated-7752133_1280.jpg');"></div>
+      <div class="hero-overlay">
+        <div class="hero-content">
+          <h1>Our Services</h1>
+          <p> • Flawless execution for corporate & private celebrations • <br> 
+            "Our marketing, branding strategies, tools, and designs are tailored to give our clients a competitive advantage in their industry while delivering impactful and measurable results."</p>
+          <a href="/contact" class="unusual-btn" style="background:var(--color3); color:#1e3a1c;">🫂 Let's Celebrate</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Corporate Wear: single image above title, left side -->
+    <div class="service-card" data-aos="fade-up">
+      <img src="../rsc/corporatewear2.png" alt="Corporate Wear" class="single-card-img" onerror="this.style.display='none'">
+      <h2 style="color:var(--color4);">Corporate Wear</h2>
+      <div class="flex-png-row">
+        <div class="exp-text"><span>Promote professionalism, team unity, and stronger brand recognition with our premium customised corporate wear. Every garment is designed to enhance your company's image, build credibility, and transform your staff into powerful brand ambassadors. At Ruties, we provide a wide selection of high-quality branded apparel tailored to suit your business needs.</span></div>
+      </div>
+      <div class="quote-btn-wrap"><a href="https://api.whatsapp.com/send/?phone=27713202405&text&type=phone_number&app_absent=0" class="fancy-quote unusual-btn"><i class="fas fa-file-invoice"></i> Get a Quote</a></div>
+    </div>
+
+    <!-- Bags and Backpacks: single image -->
+    <div class="service-card" data-aos="fade-up">
+      <img src="../rsc/bagsandbackpacks3.png" class="single-card-img" onerror="this.style.display='none'">
+      <h2 style="color:var(--color4);">Bags and Backpacks</h2>
+      <div class="flex-png-row">
+        <div class="exp-text"><span>Increase brand exposure and create a lasting impression with Rutie's range of customised bags and backpacks. Designed for both style and functionality, our high-quality branded bags are perfect for corporate events, promotions, giveaways, and everyday use, keeping your brand visible wherever they go.</span></div>
+      </div>
+      <div class="quote-btn-wrap"><a href="https://api.whatsapp.com/send/?phone=27713202405&text&type=phone_number&app_absent=0" class="fancy-quote unusual-btn"><i class="fas fa-file-invoice"></i> Get a Quote</a></div>
+    </div>
+
+    <!-- Promotional Gifts / Corporate Gifts: single image -->
+    <div class="service-card" data-aos="fade-up">
+      <img src="../rsc/promotionalgifts4.png" class="single-card-img" onerror="this.style.display='none'">
+      <h2 style="color:var(--color4);">Corporate Gifts</h2>
+      <div class="flex-png-row">
+        <div class="exp-text"><span>Enhance brand awareness and customer engagement with Rutie's extensive range of customised promotional products. From stationery and apparel to innovative tech accessories, our branded gifts are designed to leave a lasting impression, build strong connections, and keep your brand memorable.</span></div>
+      </div>
+      <div class="quote-btn-wrap"><a href="https://api.whatsapp.com/send/?phone=27713202405&text&type=phone_number&app_absent=0" class="fancy-quote unusual-btn"><i class="fas fa-file-invoice"></i> Get a Quote</a></div>
+    </div>
+
+    <!-- Headwear: single image left above title -->
+    <div class="service-card" data-aos="fade-up">
+      <img src="../rsc/headwear3.png" class="single-card-img" onerror="this.style.display='none'">
+      <h2 style="color:var(--color4);">Headwear</h2>
+      <div class="flex-png-row">
+        <div class="exp-text"><span>Rutie's branded headwear combines comfort, quality, and style to help your brand stand out. From trendy caps to warm beanies, our customised collection is perfect for promoting your logo while offering everyday practicality, protection, and long-lasting brand exposure.</span></div>
+      </div>
+      <div class="quote-btn-wrap"><a href="https://api.whatsapp.com/send/?phone=27713202405&text&type=phone_number&app_absent=0" class="fancy-quote unusual-btn"><i class="fas fa-file-invoice"></i> Get a Quote</a></div>
+    </div>
+
+    <!-- Corporate Events: single image -->
+    <div class="service-card" data-aos="fade-up">
+      <img src="../rsc/bannersandsignage3.png" class="single-card-img" onerror="this.style.display='none'">
+      <h2 style="color:var(--color4);">Corporate Events</h2>
+      <div class="flex-png-row">
+        <div class="exp-text"><span>Create memorable and impactful experiences with Rutie's corporate event solutions. From conferences, product launches, and team-building events to award ceremonies and company celebrations, we provide professional planning, branding, and event support tailored to your business needs. Our goal is to help you deliver seamless events that strengthen relationships, enhance brand presence, and leave a lasting impression on your guests.</span></div>
+      </div>
+      <div class="quote-btn-wrap"><a href="https://api.whatsapp.com/send/?phone=27713202405&text&type=phone_number&app_absent=0" class="fancy-quote unusual-btn"><i class="fas fa-file-invoice"></i> Get a Quote</a></div>
+    </div>
+
+    <!-- Other Supplies: single image -->
+    <div class="service-card" data-aos="fade-up">
+      <img src="../rsc/protectiveclothing2.png" class="single-card-img" onerror="this.style.display='none'">
+      <h2 style="color:var(--color4);">Other Supplies</h2>
+      <div class="flex-png-row">
+        <div class="exp-text"><span>We also provide a comprehensive range of essential business supplies, including stationery, cleaning materials, office equipment, and more. Our products are carefully selected to support smooth daily operations, improve workplace efficiency, and maintain a clean, professional environment. Whether you need basic office consumables or specialized equipment, we deliver reliable, high-quality solutions tailored to meet the needs of your business.</span></div>
+      </div>
+      <div class="quote-btn-wrap"><a href="https://api.whatsapp.com/send/?phone=27713202405&text&type=phone_number&app_absent=0" class="fancy-quote unusual-btn"><i class="fas fa-file-invoice"></i> Get a Quote</a></div>
+    </div>
+
+    <!-- Custom request 3D fun section -->
+    <div class="custom-3d-zone" data-aos="flip-up">
+      <div style="display:flex; flex-wrap:wrap; gap:1rem; justify-content:space-between; align-items:center;">
+        <div><i class="fas fa-magic floating-icon"></i> <i class="fas fa-cube floating-icon" style="animation-delay:0.3s;"></i></div>
+        <h2 style="font-size:clamp(1.6rem,5vw,2.2rem);">💭 Dream it, we craft it. 💭</h2>
+        <div><i class="fas fa-gift floating-icon" style="animation-delay:0.6s;"></i> <i class="fas fa-hat-cowboy floating-icon"></i></div>
+      </div>
+      <p style="font-size:1.2rem;margin:1.5rem 0;">Need something totally custom? We're talking custom shaped backdrops, themed party props, unique corporate giveaways, or limited edition merch our African design team makes your ideas real. No project too wild, no detail too small.</p><div style="margin: 1.2rem 0;"> <p style="font-weight: 600; margin-bottom: 0.8rem;">Here's what else we can dream up for you at Rutie's Party Shop:</p> <div style="display: flex; flex-direction: column; gap: 0.6rem;"> <div>🎨 <strong>Custom printed cups & glasses</strong> – coffee mugs, wine glasses, juice bottles with your logo or pictures of your choice</div> <div>🎈 <strong>Giant novelty balloons & arches</strong> – perfect for entrances and photo spots and designs of for liking as well</div> <div>📦 <strong>Personalized party favors</strong> – candy jars, mini bottles, thank you gifts for guests </div> <div>🖼️ <strong>Step & repeat backdrops</strong> – with logos, sponsors, or fun patterns that you choose or us chooing for you.</div> <div>🍾 <strong>Branded drinkware sets</strong> – tumblers, shot glasses, champagne flutes for toasts, plastic party cups, and mason jars</div> <div>🧩 <strong>Custom table runners & centerpieces</strong> – match your theme or brand colors perfectly all across South Africa</div> <div>🎪 <strong>Themed photo booth props & frames</strong> – make memories with custom cutouts specifically for you</div> <div>🕯️ <strong>Signature candles & favors</strong> – scented, labeled, wrapped your way and  perfect for any celebration</div> </div> </div><p style="font-size:1.2rem; margin-top: 1.2rem;">Got something else in mind? Just ask. We love a good challenge.</p>
+      <div class="quote-btn-wrap"><a href="https://api.whatsapp.com/send/?phone=27713202405&text&type=phone_number&app_absent=0" class="fancy-quote unusual-btn" style="background:var(--color4);"><i class="fas fa-paintbrush"></i> Start Custom </a></div>
+    </div>
+
+    <!-- sliding gallery custom works -->
+    <h2 style="margin: 2rem 0 1rem; text-align:center;">Look at some of our custom works 🌟</h2>
+    <div class="slider-gallery" id="sliderGallery">
+      <div class="slider-track" id="sliderTrack"></div>
+    </div>
+
+    <!-- thank you message -->
+    <div class="thankyou-message" id="thankYouMsg"> Thank you for choosing Ruties 🙏</div>
+  </main>
+
+  <div class="footer-wrapper">
+    <video class="footer-video-background" autoplay muted loop playsinline>
+      <source src="../rsc/rutiesfooter1.mp4" type="video/mp4">
+    </video>
+    <div class="footer-overlay">
+      <div class="footer-logo-section">
+        <img src="../rsc/rutiesgrouplogo.png" alt="Ruties 3D Logo" onerror="this.style.display='none'">
+      </div>
+      <div class="advanced-footer">
+        <div class="footer-content"><span id="typingWelcome"></span><div class="rights">© 2026 Ruties Group. All rights reserved.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="../js/corporate.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+RewriteEngine On
+RewriteBase /
+
+# Remove .html extension from ALL URLs
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}\.html -f
+RewriteRule ^(.*)$ $1.html [NC,L]
+
+# Clean URL mapping for your pages
+RewriteRule ^$ index.html [L]
+RewriteRule ^about$ page-about/index.html [L]
+RewriteRule ^contact$ page-contact/index.html [L]
+RewriteRule ^corporate$ page-corporate/index.html [L]
+RewriteRule ^gallery$ page-gallery/index.html [L]
+RewriteRule ^retail$ page-retail/index.html [L]
+
+# Redirect old paths to new clean URLs (301 redirects for SEO)
+RedirectMatch 301 ^/aboutus\.html$ /about
+RedirectMatch 301 ^/contactus\.html$ /contact
+RedirectMatch 301 ^/corporate\.html$ /corporate
+RedirectMatch 301 ^/gallery\.html$ /gallery
+RedirectMatch 301 ^/retail\.html$ /retail
+
+# Serve index.html in subdirectories when directory is requested
+DirectoryIndex index.html
+
+# Prevent directory listing
+Options -Indexes
+
+# Custom 404 page
+ErrorDocument 404 /index.html

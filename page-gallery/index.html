@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover, shrink-to-fit=no">
+  <title>Rutie's Party Shop • Visual Gallery</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Dancing+Script:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="../rsc/logo.png" type="image/png">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+    }
+    :root {
+      --color1: #21561f;
+      --color2: #e1d7cb;
+      --color3: #e7a102;
+      --color4: #64285c;
+      --light-bg: #ffffff;
+      --text-visible: #2d2d2d;
+      --header-glass: rgba(33,86,31,0.94);
+    }
+    body {
+      font-family: 'Outfit', 'Segoe UI', sans-serif;
+      background: var(--light-bg);
+      color: var(--text-visible);
+      line-height: 1.5;
+      overflow-x: hidden;
+      cursor: none;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    /* BALLOON CURSOR */
+    .balloon-cursor {
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      width: 45px;
+      height: 55px;
+      background: radial-gradient(circle at 30% 35%, #fad974, #e7a102);
+      border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.2);
+      transform: translate(-50%, -50%) rotate(5deg);
+      transition: transform 0.08s linear;
+      opacity: 0.95;
+    }
+    .balloon-cursor::after {
+      content: '';
+      position: absolute;
+      bottom: -14px;
+      left: 50%;
+      width: 3px;
+      height: 22px;
+      background: #a07c4b;
+      transform: translateX(-50%);
+    }
+    .balloon-cursor.burst { animation: burstAnim 0.3s ease-out forwards; }
+    @keyframes burstAnim {
+      0% { transform: translate(-50%, -50%) scale(1); opacity: 0.9; }
+      100% { transform: translate(-50%, -50%) scale(2.2); opacity: 0; }
+    }
+    /* CUSTOM SCROLLBAR */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: var(--color2); border-radius: 10px; }
+    ::-webkit-scrollbar-thumb { background: var(--color4); border-radius: 10px; transition: background 0.2s; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--color3); }
+    body.theme-mode ::-webkit-scrollbar-track { background: #3a2e28; }
+    body.theme-mode ::-webkit-scrollbar-thumb { background: var(--color3); }
+    /* HEADER */
+    .advanced-header {
+      position: sticky; top: 0; z-index: 1000; background: var(--header-glass);
+      backdrop-filter: blur(18px); border-bottom: 2px solid var(--color3);
+      padding: 0.7rem 1rem; display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; transition: transform 0.4s ease;
+      width: 100%;
+    }
+    .header-hidden { transform: translateY(-100%); }
+    .logo-area { display: flex; align-items: center; gap: 0.5rem; }
+    .shop-name {
+      font-size: clamp(1rem, 4vw, 1.6rem); font-weight: 700;
+      background: linear-gradient(45deg, #e7a102, #64285c, #e1d7cb, #21561f);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .nav-buttons { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    .unusual-btn {
+      background: rgba(100,40,92,0.3); border: 2px solid var(--color2); color: #fff3db;
+      padding: 0.45rem 1rem; border-radius: 3rem 0.8rem 3rem 0.8rem; font-weight: 700;
+      display: inline-flex; align-items: center; gap: 6px; cursor: pointer; white-space: nowrap;
+      font-size: clamp(0.7rem, 2.2vw, 0.85rem); text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .unusual-btn:hover { background: var(--color3); color: #1e3a1c; border-color: var(--color4); transform: scale(0.97); }
+    .dropdown-party { position: relative; }
+    .dropdown-menu {
+      position: absolute; top: 115%; right: 0; background: #fcf7ef; border: 2px solid var(--color4);
+      border-radius: 1.5rem 0.5rem; padding: 0.7rem; min-width: 190px; display: none;
+      flex-direction: column; gap: 6px; z-index: 1100; box-shadow: 0 15px 25px rgba(0,0,0,0.15);
+    }
+    .dropdown-party:hover .dropdown-menu, .dropdown-party.active .dropdown-menu { display: flex; }
+    .dropdown-menu a, .dropdown-menu .contact-info {
+      text-decoration: none; color: #2e241f; font-weight: 500; padding: 0.4rem 0.6rem;
+      border-radius: 1rem; background: #f3ede5; display: flex; align-items: center; gap: 8px;
+      font-size: 0.8rem;
+    }
+    main { padding: 1.5rem 1rem; max-width: 1400px; margin: 0 auto; width: 100%; flex: 1; overflow-x: hidden; }
+    /* PAGE HERO */
+    .gallery-hero {
+      text-align: center;
+      margin: 1rem 0 2rem;
+    }
+    .gallery-hero h1 {
+      font-family: 'Dancing Script', cursive;
+      font-size: clamp(2.5rem, 7vw, 4rem);
+      background: linear-gradient(135deg, var(--color3), var(--color4), var(--color1));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 2px 2px 12px rgba(0,0,0,0.05);
+    }
+    /* GALLERY SECTION 1: STORE PICTURES */
+    .store-section {
+      margin: 3rem 0;
+      position: relative;
+    }
+    .section-title {
+      font-size: clamp(1.8rem, 5vw, 2.5rem);
+      font-weight: 700;
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: linear-gradient(120deg, #21561f, #64285c);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .polaroid-wall {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 2rem 1.5rem;
+      perspective: 800px;
+    }
+    .polaroid-card {
+      background: #fef9ef;
+      padding: 0.8rem 0.8rem 1.2rem 0.8rem;
+      border-radius: 12px 12px 24px 24px;
+      box-shadow: 12px 16px 24px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.7);
+      transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      transform: rotate(0deg);
+      cursor: pointer;
+      backdrop-filter: blur(2px);
+      border: 1px solid rgba(231,161,2,0.3);
+    }
+    .polaroid-card:hover {
+      transform: rotate(1deg) translateY(-12px) scale(1.02);
+      box-shadow: 20px 24px 32px rgba(0,0,0,0.2);
+      border-color: var(--color3);
+    }
+    .polaroid-img {
+      width: 100%;
+      aspect-ratio: 1/1;
+      object-fit: cover;
+      border-radius: 8px;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+    }
+    .polaroid-caption {
+      margin-top: 12px;
+      text-align: center;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #64285c;
+      letter-spacing: 0.5px;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+    }
+    .polaroid-caption i {
+      color: var(--color3);
+    }
+    /* alternating tilt for extra quirk */
+    .polaroid-card:nth-child(even) { transform: rotate(1.5deg); }
+    .polaroid-card:nth-child(odd) { transform: rotate(-1deg); }
+    .polaroid-card:hover:nth-child(even) { transform: rotate(0deg) translateY(-12px) scale(1.02); }
+    .polaroid-card:hover:nth-child(odd) { transform: rotate(0deg) translateY(-12px) scale(1.02); }
+
+    /* SECTION 2: SUBLIMATION GALLERY  */
+    .sublimation-section {
+      margin: 4rem 0;
+      position: relative;
+    }
+    .ribbon-carousel {
+      background: linear-gradient(145deg, #faf3e8, #f5e8da);
+      border-radius: 4rem 2rem 4rem 2rem;
+      padding: 2rem 1rem;
+      box-shadow: 0 20px 35px -12px rgba(0,0,0,0.2);
+      position: relative;
+    }
+    body.theme-mode .ribbon-carousel {
+      background: linear-gradient(145deg, #2e3a28, #253423);
+    }
+    .carousel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      padding: 0 1rem 1rem;
+    }
+    .carousel-header h3 {
+      font-size: 1.8rem;
+      font-family: 'Dancing Script', cursive;
+      color: var(--color4);
+    }
+    .scroll-badge {
+      background: var(--color3);
+      padding: 0.3rem 1rem;
+      border-radius: 40px;
+      font-size: 0.8rem;
+      font-weight: bold;
+      color: #1e3a1c;
+    }
+    .sublimation-scroll-container {
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      cursor: grab;
+      padding-bottom: 1rem;
+      border-radius: 2rem;
+      scrollbar-width: thin;
+      scrollbar-color: var(--color4) var(--color2);
+    }
+    .sublimation-scroll-container:active { cursor: grabbing; }
+    .sublimation-track {
+      display: flex;
+      gap: 1.8rem;
+      width: max-content;
+      padding: 0.5rem 0.8rem;
+    }
+    .festive-frame {
+      position: relative;
+      width: 280px;
+      flex-shrink: 0;
+      transition: all 0.3s ease;
+      filter: drop-shadow(0 8px 18px rgba(0,0,0,0.2));
+    }
+    .festive-frame:hover {
+      transform: scale(1.02) translateY(-8px);
+      filter: drop-shadow(0 16px 28px rgba(0,0,0,0.25));
+    }
+    .frame-border {
+      background: white;
+      padding: 0.6rem;
+      border-radius: 28px 28px 32px 32px;
+      background: linear-gradient(135deg, #fff6e8, #fffcf5);
+      position: relative;
+      clip-path: polygon(0% 0%, 100% 0%, 95% 100%, 0% 100%);
+    }
+    .frame-border::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      background: linear-gradient(45deg, var(--color3), var(--color4), var(--color1));
+      border-radius: 30px;
+      z-index: -1;
+      opacity: 0.6;
+    }
+    .sublimation-img {
+      width: 100%;
+      aspect-ratio: 1 / 0.95;
+      object-fit: cover;
+      border-radius: 22px;
+      transition: all 0.3s;
+      display: block;
+    }
+    .confetti-badge {
+      position: absolute;
+      bottom: -12px;
+      right: 12px;
+      background: var(--color3);
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #1e3a1c;
+      font-size: 1.2rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      transition: 0.2s;
+    }
+    .festive-frame:hover .confetti-badge {
+      transform: scale(1.1) rotate(10deg);
+      background: var(--color4);
+      color: var(--color3);
+    }
+    /* control buttons custom */
+    .scroll-controls {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1.2rem;
+    }
+    .scroll-btn {
+      background: var(--color4);
+      border: none;
+      color: white;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .scroll-btn:hover {
+      background: var(--color3);
+      transform: scale(1.05);
+      color: #1e3a1c;
+    }
+    /* thank you animation */
+    .thankyou-message {
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: 600;
+      padding: 1.8rem;
+      background: linear-gradient(130deg, #21561f10, #64285c10);
+      border-radius: 3rem;
+      margin: 2rem 0;
+      font-family: 'Dancing Script', cursive;
+      min-height: 98px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    /* FOOTER VIDEO */
+    .footer-wrapper {
+      position: relative;
+      flex-shrink: 0;
+      overflow: hidden;
+      margin-top: 2rem;
+      width: 100%;
+    }
+    .footer-video-background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+    }
+    .footer-overlay {
+      position: relative;
+      z-index: 1;
+      background: rgba(30, 26, 20, 0.75);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+    .footer-logo-section img { max-width: 130px; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.5)); }
+    .advanced-footer { text-align: center; color: #f5efe8; }
+    #typingWelcome {
+      font-size: 1.4rem;
+      font-weight: 600;
+      display: inline-block;
+      min-width: 200px;
+      letter-spacing: 1px;
+    }
+    .rights { font-size: 0.8rem; opacity: 0.8; margin-top: 0.8rem; }
+    @media (max-width: 720px) {
+      .polaroid-wall { gap: 1.2rem; }
+      .festive-frame { width: 220px; }
+      .sublimation-track { gap: 1rem; }
+      .section-title { font-size: 1.6rem; }
+      .thankyou-message { font-size: 1.2rem; padding: 1.2rem; min-height: 80px; }
+      .nav-buttons { width: 100%; justify-content: space-between; margin-top: 0.3rem; }
+      .advanced-header { gap: 0.5rem; }
+    }
+    @media (max-width: 480px) {
+      .festive-frame { width: 180px; }
+      .polaroid-card { padding: 0.5rem 0.5rem 1rem; }
+    }
+    [data-aos] { transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+    body.theme-mode .ribbon-carousel { background: #2a3526; }
+    body.theme-mode .polaroid-card { background: #2f2a22; color: #eeddcc; border-color: #e7a102; }
+    body.theme-mode .polaroid-caption { color: #ffde9e; }
+    body.theme-mode .frame-border { background: #3c352c; }
+    body.theme-mode .scroll-btn { background: #21561f; }
+  </style>
+</head>
+<body id="bodyRoot">
+  <div class="balloon-cursor" id="balloonCursor"></div>
+
+  <header class="advanced-header" id="mainHeader">
+    <div class="logo-area">
+      <i class="fas fa-party-horn" style="font-size:1.8rem; color:#e7a102;"></i>
+      <span class="shop-name" id="typingShopName">Rutie's Group</span>
+    </div>
+    <div class="nav-buttons">
+      <button class="unusual-btn" id="homeNavBtn"><i class="fas fa-home"></i> Home</button>
+      <button class="unusual-btn" id="retailNavBtn"><i class="fas fa-store"></i> Retail</button>
+      <div class="dropdown-party" id="sublimationDropdown">
+        <button class="unusual-btn" id="corporateNavBtn"><i class="fas fa-tshirt"></i> Corporate</button>
+        <div class="dropdown-menu">
+          <a href="/corporate"><i class="fas fa-user-tie"></i> Corporate Wear</a>
+          <a href="/corporate"><i class="fas fa-briefcase"></i> Bags & Backpacks</a>
+          <a href="/corporate"><i class="fas fa-gift"></i> Promotional Gifts</a>
+          <a href="/corporate"><i class="fas fa-flag"></i> Banners & Signage</a>
+        </div>
+      </div>
+      <div class="dropdown-party" id="contactDropdown">
+        <button class="unusual-btn" id="contactMainBtn"><i class="fas fa-address-book"></i> Contact</button>
+        <div class="dropdown-menu">
+          <div class="contact-info"><i class="fas fa-phone"></i> +27 (11) 395-3340</div>
+          <div class="contact-info"><i class="fas fa-envelope"></i> info@rutiesgroup.co.za</div>
+          <div class="contact-info"><i class="fab fa-whatsapp"></i> (071) 320-2405</div>
+          <div class="contact-info"><i class="fas fa-map-marker-alt"></i> Fourways Mall, Sandton</div>
+          <a href="https://www.instagram.com/rutiesgroup?igsh=aHdxNHpucnZpMzJw&utm_source=qr" target="_blank"><i class="fab fa-instagram"></i> Instagram</a>
+        </div>
+      </div>
+      <button class="unusual-btn" id="aboutNavBtn"><i class="fas fa-info-circle"></i> About</button>
+      <button id="themeToggleBtn" class="unusual-btn"><span class="theme-symbol">🌙</span></button>
+    </div>
+  </header>
+
+  <main>
+    <div class="gallery-hero" data-aos="fade-down">
+      <h1><i class="fas fa-camera-retro"></i> Our African Moments</h1>
+      <p style="font-size:1.1rem; color: var(--color4);">We are a walk in store at Fourways mall at the food court opposite Wimpy.</p>
+    </div>
+
+    <!-- SECTION 1: STORE PICTURES -->
+    <div class="store-section" data-aos="fade-up">
+      <div class="section-title">
+        <i class="fas fa-store"></i> 
+        <span> Rutie's Party Shop 🛒</span>
+      </div>
+      <div class="polaroid-wall" id="storeGalleryWall"></div>
+    </div>
+
+    <!-- SECTION 2: SUBLIMATION ART -->
+    <div class="sublimation-section" data-aos="fade-up">
+      <div class="ribbon-carousel">
+        <div class="carousel-header">
+          <h3><i class="fas fa-palette"></i> Sublimation and Branding | Custom Crafted</h3>
+          <div class="scroll-badge"><i class="fas fa-arrows-alt-h"></i> swipe • drift</div>
+        </div>
+        <div class="sublimation-scroll-container" id="sublimationScrollContainer">
+          <div class="sublimation-track" id="sublimationTrack"></div>
+        </div>
+        <div class="scroll-controls">
+          <button class="scroll-btn" id="scrollLeftBtn"><i class="fas fa-chevron-left"></i></button>
+          <button class="scroll-btn" id="scrollRightBtn"><i class="fas fa-chevron-right"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- THANK YOU MESSAGE -->
+    <div class="thankyou-message" id="thankYouMsg">🙏 Thank you for exploring our Gallery 🎈</div>
+  </main>
+
+  <div class="footer-wrapper">
+    <video class="footer-video-background" autoplay muted loop playsinline>
+      <source src="../rsc/rutiesfooter1.mp4" type="video/mp4">
+    </video>
+    <div class="footer-overlay">
+      <div class="footer-logo-section">
+        <img src="../rsc/logo3D.png" alt="Ruties 3D Logo" onerror="this.style.display='none'">
+      </div>
+      <div class="advanced-footer">
+        <div class="footer-content"><span id="typingWelcome"></span><div class="rights">© 2026 Ruties Group. All rights reserved.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="../js/gallery.js" defer></script>
+</body>
+</html>
